@@ -1,0 +1,80 @@
+#include <iostream>
+
+using namespace std;
+const int INITIAL_CAPACITY = 1;
+const int FACTOR = 2;
+
+template <class T>
+class dynamic_array {
+    T* array;
+    int capacity = INITIAL_CAPACITY;
+    int size;
+
+public:
+
+    dynamic_array() 
+    {
+        array = new T[capacity];
+        size = 0;
+    }
+
+    void push(T element) {
+        if (size == capacity) 
+        {
+            update();
+        }
+        array[size] = element;
+        size++;
+
+    }
+
+    void insert(int index, T element) 
+    {
+        if ((index > size) || (index < 0)) 
+        {
+            cout << "Nieprawidłowe indeksowanie -> insert()" << endl;;
+            return;
+        }
+
+        array[index] = element;
+     
+    }
+
+    void sort()
+    {
+
+    }
+
+    void update() {
+        capacity *= FACTOR;
+        T* replica = new T[capacity];
+        copy(array, array + size, replica);
+        delete[] array;
+        array = replica;
+    }
+
+    T get(int index) 
+    {
+        if ((index > size) || (index < 0))
+        {
+            cout << "Nieprawidłowe indeksowanie -> get()" << endl;;
+            return{};
+        }
+        return array[index];
+    }
+};
+
+
+
+int main() {
+
+    dynamic_array<int> p1;
+    p1.push(3);
+    p1.push(4);
+    p1.push(5);
+    p1.push(4);
+    p1.push(33);
+    p1.push(3);
+
+    return 0;
+}
