@@ -1,11 +1,14 @@
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 const int INITIAL_CAPACITY = 1;
 const int FACTOR = 2;
 
 template <class T>
-class dynamic_array {
+class dynamic_array 
+{
+
     T* array;
     int capacity = INITIAL_CAPACITY;
     int size;
@@ -18,7 +21,8 @@ public:
         size = 0;
     }
 
-    void push(T element) {
+    void push(T element) 
+    {
         if (size == capacity) 
         {
             update();
@@ -42,10 +46,22 @@ public:
 
     void sort()
     {
-
+        bool swapped; int i = 0; int j = 0;
+        for (i = 0; i < size; i++) {
+            bool swapped = false;
+            for (j = 1; j < size - i; j++)
+            {
+                if (array[j - 1] > array[j])
+                    swap(array[j - 1], array[j]);
+                swapped = true;
+            }
+            if (swapped == false)
+                break;
+        }
     }
 
-    void update() {
+    void update() 
+    {
         capacity *= FACTOR;
         T* replica = new T[capacity];
         copy(array, array + size, replica);
@@ -62,6 +78,26 @@ public:
         }
         return array[index];
     }
+
+    void to_string()
+    {
+        cout << "Current size: " << size << endl;
+        cout << "Current capacity: " << capacity << endl;
+        for (int i = 0; i < size; i++)
+        {
+            cout << array[i] << " ";
+            if (i == 10)
+            {
+                return;
+            }
+        }
+        cout << endl;
+    }
+
+    void clear()
+    {
+        delete[] array;
+    }
 };
 
 
@@ -69,12 +105,26 @@ public:
 int main() {
 
     dynamic_array<int> p1;
-    p1.push(3);
-    p1.push(4);
-    p1.push(5);
-    p1.push(4);
-    p1.push(33);
-    p1.push(3);
+    const int order = 7;
+    const int n = pow(10, order);
+
+    clock_t t1 = clock();
+    double max_time_per_element = 0.0;
+
+    for (int i = 0; i < n; i++)
+    {
+        clock_t t1_element = clock();
+        p1.push(7);
+        clock_t t2_element = clock();
+        double time_per_element = double(t2_element - t1_element) / CLOCKS_PER_SEC;
+        if (time_per_element > max_time_per_element)
+        {
+            cout << time_per_element << " przy indeksie " << i << endl;
+        }
+    }
+
+
+    p1.clear();
+
 
     return 0;
-}
